@@ -139,7 +139,11 @@ class Swiper extends Component {
   }
 
   createAnimatedEvent = () => {
-    const { horizontalSwipe, verticalSwipe } = this.props
+    const { horizontalSwipe: h, verticalSwipe: v, horizontalSwipeCard, verticalSwipeCard } = this.props
+    const { cards, firstCardIndex } = this.state
+    const card = cards[firstCardIndex]
+    const horizontalSwipe = h && horizontalSwipeCard(card)
+    const verticalSwipe = v && verticalSwipeCard(card)
     const { x, y } = this.state.pan
     const dx = horizontalSwipe ? x : 0
     const dy = verticalSwipe ? y : 0
@@ -865,6 +869,7 @@ Swiper.defaultProps = {
   disableRightSwipe: false,
   disableTopSwipe: false,
   horizontalSwipe: true,
+  horizontalSwipeCard: () => true,
   horizontalThreshold: width / 4,
   infinite: false,
   inputCardOpacityRangeX: [-width / 2, -width / 3, 0, width / 3, width / 2],
@@ -928,6 +933,7 @@ Swiper.defaultProps = {
   swipeBackCard: false,
   swipeBackFriction: 11,
   verticalSwipe: true,
+  verticalSwipeCard: () => true,
   verticalThreshold: height / 5,
   zoomAnimationDuration: 100,
   zoomFriction: 7,
