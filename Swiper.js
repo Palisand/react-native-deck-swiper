@@ -461,7 +461,7 @@ class Swiper extends Component {
 
   incrementCardIndex = onSwiped => {
     const { firstCardIndex } = this.state
-    let newCardIndex = firstCardIndex + 1
+    let newCardIndex = firstCardIndex + (this.props.shouldIncrementCardIndex(firstCardIndex) ? 1 : 0)
     let swipedAllCards = false
 
     if (newCardIndex === this.state.cards.length) {
@@ -834,6 +834,7 @@ Swiper.propTypes = {
   previousCardInitialPositionY: PropTypes.number,
   renderCard: PropTypes.func.isRequired,
   secondCardZoom: PropTypes.number,
+  shouldIncrementCardIndex: PropTypes.func,
   showSecondCard: PropTypes.bool,
   swipeAnimationDuration: PropTypes.number,
   swipeBackAnimationDuration: PropTypes.number,
@@ -927,6 +928,7 @@ Swiper.defaultProps = {
   previousCardInitialPositionX: 0,
   previousCardInitialPositionY: -height,
   secondCardZoom: 0.97,
+  shouldIncrementCardIndex: () => true,
   showSecondCard: true,
   swipeAnimationDuration: 350,
   swipeBackAnimationDuration: 600,
