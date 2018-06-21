@@ -223,7 +223,11 @@ class Swiper extends Component {
       disableBottomSwipe,
       disableLeftSwipe,
       disableRightSwipe,
-      disableTopSwipe
+      disableTopSwipe,
+      disableBottomSwipeCard,
+      disableLeftSwipeCard,
+      disableRightSwipeCard,
+      disableTopSwipeCard
     } = this.props
 
     const {
@@ -233,11 +237,14 @@ class Swiper extends Component {
       isSwipingBottom
     } = this.getSwipeDirection(this._animatedValueX, this._animatedValueY)
 
+    const { cards, firstCardIndex } = this.state
+    const card = cards[firstCardIndex]
+
     return (
-      (isSwipingLeft && !disableLeftSwipe) ||
-      (isSwipingRight && !disableRightSwipe) ||
-      (isSwipingTop && !disableTopSwipe) ||
-      (isSwipingBottom && !disableBottomSwipe)
+      (isSwipingLeft && !disableLeftSwipe && !disableLeftSwipeCard(card)) ||
+      (isSwipingRight && !disableRightSwipe && !disableRightSwipeCard(card)) ||
+      (isSwipingTop && !disableTopSwipe && !disableTopSwipeCard(card)) ||
+      (isSwipingBottom && !disableBottomSwipe && !disableBottomSwipeCard(card))
     )
   }
 
@@ -746,17 +753,22 @@ class Swiper extends Component {
       disableLeftSwipe,
       disableRightSwipe,
       disableTopSwipe,
+      disableBottomSwipeCard,
+      disableLeftSwipeCard,
+      disableRightSwipeCard,
+      disableTopSwipeCard,
       overlayLabels
     } = this.props
 
-    const { labelType } = this.state
+    const { labelType, cards, firstCardIndex } = this.state
+    const card = cards[firstCardIndex]
 
     const labelTypeNone = labelType === LABEL_TYPES.NONE
     const directionSwipeLabelDisabled =
-      (labelType === LABEL_TYPES.BOTTOM && disableBottomSwipe) ||
-      (labelType === LABEL_TYPES.LEFT && disableLeftSwipe) ||
-      (labelType === LABEL_TYPES.RIGHT && disableRightSwipe) ||
-      (labelType === LABEL_TYPES.TOP && disableTopSwipe)
+      (labelType === LABEL_TYPES.BOTTOM && disableBottomSwipe && disableBottomSwipeCard(card)) ||
+      (labelType === LABEL_TYPES.LEFT && disableLeftSwipe && disableleftSwipeCard(card)) ||
+      (labelType === LABEL_TYPES.RIGHT && disableRightSwipe && disableRightSwipeCard(card)) ||
+      (labelType === LABEL_TYPES.TOP && disableTopSwipe && disableTopSwipeCard(card))
 
     if (
       !overlayLabels ||
@@ -795,9 +807,13 @@ Swiper.propTypes = {
   children: PropTypes.any,
   childrenOnTop: PropTypes.bool,
   disableBottomSwipe: PropTypes.bool,
+  disableBottomSwipeCard: PropTypes.func,
   disableLeftSwipe: PropTypes.bool,
+  disableLeftSwipeCard: PropTypes.func,
   disableRightSwipe: PropTypes.bool,
+  disableRightSwipeCard: PropTypes.func,
   disableTopSwipe: PropTypes.bool,
+  disableTopSwipeCard: PropTypes.func,
   horizontalSwipe: PropTypes.bool,
   horizontalThreshold: PropTypes.number,
   infinite: PropTypes.bool,
@@ -866,9 +882,13 @@ Swiper.defaultProps = {
   cardVerticalMargin: 60,
   childrenOnTop: false,
   disableBottomSwipe: false,
+  disableBottomSwipeCard: () => false,
   disableLeftSwipe: false,
+  disableLeftSwipeCard: () => false,
   disableRightSwipe: false,
+  disableRightSwipeCard: () => false,
   disableTopSwipe: false,
+  disableTopSwipeCard: () => false,
   horizontalSwipe: true,
   horizontalSwipeCard: () => true,
   horizontalThreshold: width / 4,
