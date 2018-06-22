@@ -454,7 +454,10 @@ class Swiper extends Component {
           friction: this.props.stackAnimationFriction,
           tension: this.props.stackAnimationTension,
           useNativeDriver: true
-        }).start()
+        }).start(() => {
+          // this ensures next card will always animate
+          return this.forceUpdate();
+        })
 
         const newScale = (100 - this.props.stackScale * cardPosition) * 0.01
         Animated.spring(this.state[`stackScale${index}`], {
